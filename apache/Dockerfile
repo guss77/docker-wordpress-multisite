@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libxml2-dev &&
 	&& docker-php-ext-install soap \
 	&& docker-php-ext-install zip \
 	&& docker-php-ext-install mbstring
-RUN docker-php-ext-install mysqli opcache
+RUN docker-php-ext-install mysqli opcache pdo pdo_mysql
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
