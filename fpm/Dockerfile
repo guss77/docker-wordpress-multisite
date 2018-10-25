@@ -23,8 +23,8 @@ RUN { \
 
 VOLUME /var/www/html
 
-ENV WORDPRESS_VERSION 4.9.8
-ENV WORDPRESS_SHA1 0945bab959cba127531dceb2c4fed81770812b4f
+ENV WORDPRESS_VERSION 4.9.5
+ENV WORDPRESS_SHA1 6992f19163e21720b5693bed71ffe1ab17a4533a
 
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz \
