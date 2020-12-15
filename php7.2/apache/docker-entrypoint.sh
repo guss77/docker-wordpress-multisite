@@ -52,7 +52,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		fi
 
 		echo >&2 "WordPress not found in $PWD - copying now..."
-		if [ -n "$(ls -A)" ]; then
+		if [ -n "$(find -mindepth 1 -maxdepth 1 -not -name wp-content)" ]; then
 			echo >&2 "WARNING: $PWD is not empty! (copying anyhow)"
 		fi
 		sourceTarArgs=(
@@ -69,6 +69,17 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 			# avoid "tar: .: Cannot utime: Operation not permitted" and "tar: .: Cannot change mode to rwxr-xr-x: Operation not permitted"
 			targetTarArgs+=( --no-overwrite-dir )
 		fi
+		# loop over "pluggable" content in the source, and if it already exists in the destination, skip it
+		# https://github.com/docker-library/wordpress/issues/506 ("wp-content" persisted, "akismet" updated, WordPress container restarted/recreated, "akismet" downgraded)
+		for contentDir in /usr/src/wordpress/wp-content/*/*/; do
+			contentDir="${contentDir%/}"
+			[ -d "$contentDir" ] || continue
+			contentPath="${contentDir#/usr/src/wordpress/}" # "wp-content/plugins/akismet", etc.
+			if [ -d "$PWD/$contentPath" ]; then
+				echo >&2 "WARNING: '$PWD/$contentPath' exists! (not copying the WordPress version)"
+				sourceTarArgs+=( --exclude "./$contentPath" )
+			fi
+		done
 		tar "${sourceTarArgs[@]}" . | tar "${targetTarArgs[@]}"
 		echo >&2 "Complete! WordPress has been successfully copied to $PWD"
 		if [ ! -e .htaccess ]; then
@@ -160,7 +171,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 				}
 				{ print }
 			' wp-config-sample.php > wp-config.php <<'EOPHP'
-// If we're behind a proxy server and using HTTPS, we need to alert Wordpress of that fact
+// If we're behind a proxy server and using HTTPS, we need to alert WordPress of that fact
 // see also http://codex.wordpress.org/Administration_Over_SSL#Using_a_Reverse_Proxy
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
 	$_SERVER['HTTPS'] = 'on';
