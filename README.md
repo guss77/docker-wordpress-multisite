@@ -1,8 +1,10 @@
-# https://github.com/docker-library/wordpress
+# https://github.com/guss77/docker-wordpress-multisite
 
-## Maintained by: [the Docker Community](https://github.com/docker-library/wordpress)
+## Maintained by: [Oded Arbel](https://github.com/guss77)
 
-This is the Git repo of the [Docker "Official Image"](https://github.com/docker-library/official-images#what-are-official-images) for [`wordpress`](https://hub.docker.com/_/wordpress/) (not to be confused with any official `wordpress` image provided by `wordpress` upstream). See [the Docker Hub page](https://hub.docker.com/_/wordpress/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
+This is a fork of the Git repo of the [Docker "Official Image"](https://github.com/docker-library/official-images#what-are-official-images) for [`wordpress`](https://hub.docker.com/_/wordpress/). See [the Docker Hub page](https://hub.docker.com/r/guss77/docker-wordpress-multisite/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
+
+This fork was created to enable Wordpress Multi-site functionality out of the box without needing any additional site-specific configuration.
 
 The [full image description on Docker Hub](https://hub.docker.com/_/wordpress/) is generated/maintained over in [the docker-library/docs repository](https://github.com/docker-library/docs), specifically in [the `wordpress` directory](https://github.com/docker-library/docs/tree/master/wordpress).
 
